@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-	before_action: :logged_in?, only: [:show, :index]
+	before_action :logged_in?, only: [:show, :index]
+
 	def index
 		@users = User.all
 	end
@@ -13,7 +14,7 @@ class UsersController < ApplicationController
 		if @user != nil
 			redirect_to "/users/#{@user.id}"
 		else
-			redirect_to sign_in_path
+			redirect_to "/sessions/new"
 		end
 	end
 
@@ -22,22 +23,8 @@ class UsersController < ApplicationController
 		if current_user == @user
 			render :show
 		else
-			redirect_to sign_in_path
+			redirect_to "/sessions/new"
 		end
-	end
-
-	def edit
-		@user = User.find(params[:id])
-	end
-
-	def update
-		user_id = params[:id]
-		user = User.find(user_id)
-
-		update_attributes = params.require(:user).permit(:first_name, :last_name)
-		user.update_attributes(update_attributes)
-
-		redirect_to "/users/#{@user.id}"
 	end
 
 	private
