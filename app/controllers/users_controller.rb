@@ -27,16 +27,17 @@ class UsersController < ApplicationController
 		end
 	end
 
-	 def edit
-    @user = User.find(params[:id])
-  end
+	def edit
+    	@user = User.find(params[:id])
+  	end
 
 	def update
 		user = User.find(params[:id])
-		binding.pry
-		new_attributes = params.require(:user).permit(:first_name, :last_name)
 
-		user.update_attributes(new_attributes)
+		updated_attributes = params.require(:user).permit(:first_name, :last_name,)
+
+		user.update_attribute(:first_name, updated_attributes[:first_name])
+		user.update_attribute(:last_name, updated_attributes[:last_name])
 
 		redirect_to "/users/#{user.id}"
 	end
